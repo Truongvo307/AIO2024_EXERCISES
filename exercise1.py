@@ -166,3 +166,4 @@ def mdre(y, y_hat, n, p):
 if __name__ == "__main__":
     print("Exercise 1 - Module 1 - 240601")
     print(f"1. Calculate F1 score: {cal_f1_score(2, 3, 4)}")
+    print(f"2. Sigmoid: {sigmoid(2)}")
