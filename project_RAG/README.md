@@ -53,7 +53,7 @@ This project has been tested using Python 3.11 version.
 7. **Run Chainlit App**
     - Start the Chainlit app with the following command:
       ```sh
-      ~$ chainlit run app.py --host 0.0.0.0 --port 8000 & >/content/logs.txt
+      ~$ chainlit run app.py --host 0.0.0.0 --port 8000 &>/content/logs.txt
       ```
 
 8. **Launch Chainlit App with Localtunnel**
