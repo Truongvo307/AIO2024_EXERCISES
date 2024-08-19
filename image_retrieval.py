@@ -2,18 +2,34 @@ import os
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
-
+# C:\Users\truon\Documents\GitHub\AIO2024_EXERCISES\data\data\test\Orange_easy\0_100.jpg
 ROOT = 'data'
 CLASS_NAME = sorted(list(os.listdir(f'{ROOT}/train')))
+#data !gdown 1msLVo0g0LFmL9-qZ73vq9YEVZwbzOePF
+
+def plot_results(querquery_pathy, ls_path_score, reverse):
+    fig = plt.figure(figsize=(15, 9))
+    fig.add_subplot(2, 3, 1)
+    plt.imshow(read_image_from_path(querquery_pathy, size=(448, 448)))
+    plt.title(f"Query Image: {querquery_pathy.split('/')[2]}", fontsize=16)
+    plt.axis("off")
+    for i, path in enumerate(sorted(ls_path_score, key=lambda x: x[1], reverse=reverse)[:5], 2):
+        fig.add_subplot(2, 3, i)
+        print(path[0])
+        plt.imshow(read_image_from_path(path[0], size=(448, 448)))
+        plt.title(f"Top {i-1}: {path[0].split('/')[2]}", fontsize=16)
+        plt.axis("off")
+    plt.show()
 
 
 def read_image_from_path(path, size):
+    # print(path)
     im = Image.open(path).convert('RGB').resize(size)
     return np.array(im)
 
 
 def folder_to_images(folder, size):
-    list_dir = [f'folder/{name}' for name in os.listdir(folder)]
+    list_dir = [f'{folder}/{name}' for name in os.listdir(folder)]
     images_np = np.zeros(shape=(len(list_dir), *size, 3))
     images_path = []
     for i, path in enumerate(list_dir):
@@ -55,7 +71,7 @@ def get_l1_score(root_img_path, query_path, size):
     ls_path_score = []
     for folder in os.listdir(root_img_path):
         if folder in CLASS_NAME:
-            path = root_img_path + '/' + folder
+            path = root_img_path + folder
             image_np, image_path = folder_to_images(path, size)
             rates = absolute_difference(query, image_np)
             ls_path_score.append(list(zip(image_path, rates)))
@@ -101,14 +117,18 @@ def get_correlation_coefficient_score(root_img_path, query_path, size):
 
 
 if __name__ == '__main__':
-    root_img_path = f'{ROOT}/train/'
+    root_img_path = f"{ROOT}/train/"
     query_path = f"{ROOT}/test/Orange_easy/0_100.jpg"
-    # query_path = f"{ROOT}/test/African_crocodile/n01697457_18534.JPEG"
     size = (448, 448)
+    query, ls_path_score = get_l1_score(root_img_path, query_path, size)
+    plot_results(query_path, ls_path_score, reverse=False)
+
     # query, ls_path_score = get_l1_score(root_img_path, query_path, size)
     # query, ls_path_score = get_l2_score(root_img_path, query_path, size)
-    query, ls_path_score = get_cosine_similarity_score(root_img_path, query_path, size)
-    plot_results(query_path, ls_path_score, reverse=False)
-    #correlation_coefficient
-    query, ls_path_score = get_correlation_coefficient_score(root_img_path, query_path, size)
-    plot_results(query_path, ls_path_score, reverse=True)
+    # query, ls_path_score = get_cosine_similarity_score(
+    #     root_img_path, query_path, size)
+    # plot_results(query_path, ls_path_score, reverse=False)
+    # # correlation_coefficient
+    # query, ls_path_score = get_correlation_coefficient_score(
+    #     root_img_path, query_path, size)
+    # plot_results(query_path, ls_path_score, reverse=True)
