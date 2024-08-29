@@ -62,3 +62,5 @@ def rating_group ( rating ) :
 # creating a new variable in the dataset to hold the rating category
 data['Rating_category'] = data['Rating'].apply(rating_group)
 print(data[['Title','Director','Rating','Rating_category']].head(5))
+
+
