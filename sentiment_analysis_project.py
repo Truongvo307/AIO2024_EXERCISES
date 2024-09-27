@@ -25,6 +25,9 @@ def read_data(file_path):
     try:
         df = pd.read_csv(file_path)
         # Remove duplicate rows
+        num_duplicates = df.duplicated().sum()
+        print(
+            f"The number of duplicate samples on the dataset: {num_duplicates}")
         df = df.drop_duplicates()
         return df
     except Exception as e:
